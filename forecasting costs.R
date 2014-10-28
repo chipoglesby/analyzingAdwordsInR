@@ -18,7 +18,13 @@ data <- getData(clientCustomerId='xxx-xxx-xxxx',statement=body,transformation=TR
 
 # Create a time-series object in R with starting year 2012 and frequency 12, for months.
 # You can replace months and year with your own time. 
-myts<- ts(data$Cost, start=c(2012, 1), end=c(2014, 7), frequency= 365)
+myts<- ts(data$Cost, start=c(2012, 1), end=c(2014, 7),)
+
+#OR
+#myts <- msts(data$Cost, seasonal.periods=c(7,365.25))
+#fit <- tbats(y)
+#fc <- forecast(fit)
+#plot(fc)
 
 # Create a HoltWinters model for the time-series object “myts”.
 HWmodel<- HoltWinters(myts)
