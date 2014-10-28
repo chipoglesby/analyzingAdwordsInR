@@ -10,20 +10,20 @@ loadToken()
 refreshToken()
 
 #Metrics for Account Performance Report
-body <- statement(select=c('Date','Cost','ConversionValue', 'AverageCpc'), 
+body <- statement(select=c('Date','Cost'), 
                   report="ACCOUNT_PERFORMANCE_REPORT",
                   start="20120101", 
                   end="20140730")
-data <- getData(clientCustomerId='xx-xxx-xxx',statement=body,transformation=TRUE) #JMJ SUPPLY
+data <- getData(clientCustomerId='xxx-xxx-xxxx',statement=body,transformation=TRUE)
 
-# Create a time-series object in R with starting year 2007 and frequency 12, for months.
+# Create a time-series object in R with starting year 2012 and frequency 12, for months.
 # You can replace months and year with your own time. 
-myts<- ts(data$Cost, start=c(2012, 7), end=c(2014, 12), frequency= 365)
+myts<- ts(data$Cost, start=c(2012, 1), end=c(2014, 7), frequency= 365)
 
 # Create a HoltWinters model for the time-series object “myts”.
 HWmodel<- HoltWinters(myts)
 
-# This function predicts the number of expected visitor for the next twelve months
+# This function predicts the number of expected costs for the next 30 days
 # (n.ahead=12) with 95% of confidence interval.
 future<- predict(HWmodel, n.ahead=30, level=0.95)
 
@@ -57,10 +57,10 @@ accuracy(fit)
 #What to do next. Taken from: http://goo.gl/MRp2q3
 
 #Preview what the plot will look like if you want
-HWplot(myts, n.ahead=365, CI=.95, error.ribbon='green',line.size=1)
+HWplot(myts, n.ahead=90, CI=.95, error.ribbon='green',line.size=1)
 
 #make adjustments to the graph
-graph <- HWplot(myts, n.ahead = 365, error.ribbon = "red")
+graph <- HWplot(myts, n.ahead = 90, error.ribbon = "red")
 
 # add a title
 graph <- graph + opts(title = "Forecast for PPC Costs")
