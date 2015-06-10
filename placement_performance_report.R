@@ -3,7 +3,7 @@
 library(RAdwords)
 library(dplyr)
 
-#Read in a list of Clients
+#Read in a list of clients. This data will need to be exported on the MCC level. 
 clients <- read.csv("clients.csv", header = TRUE, sep = ",")
 
 #Client ID's to account for looping
