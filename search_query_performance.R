@@ -8,7 +8,7 @@ accounts <- clients$Customer.ID
 google_auth <- doAuth()
 
 yesterday <- gsub("-","",format(Sys.Date()-1,"%Y-%m-%d"))
-thirtydays<- gsub("-","",format(Sys.Date()-29,"%Y-%m-%d"))
+thirtydays <- gsub("-","",format(Sys.Date()-29,"%Y-%m-%d"))
 
 body <- statement(select=c("AccountDescriptiveName","CampaignName","AdGroupName","KeywordTextMatchingQuery","Query","MatchTypeWithVariant","Impressions","Clicks","Ctr", "ConvertedClicks","AverageCpc","Cost","AveragePosition","Date"),
                   report="SEARCH_QUERY_PERFORMANCE_REPORT",
