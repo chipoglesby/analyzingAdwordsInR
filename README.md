@@ -1,6 +1,7 @@
 # Analyzing-Adwords-in-R
 
 This repo contains a set up scripts that I use in R with the <a href="https://github.com/jburkhardt/RAdwords">RAdwords</a> package by Johannes Burkhardt.
+<p>Note: Your needs and analysis will always be different. These scripts are designed to help you get AdWords data into R quickly and efficently. You will need an AdWords API token, which you can <a href="https://developers.google.com/adwords/api/docs/signingup">apply for here.</a>
 
 #<a href="https://github.com/chipoglesby/Analyzing-Adwords-in-R/blob/master/account_performance_report.R">Account Performance Report</a>
 The account performance report script loads a list of clients, looping through each account and pulls data from the <a href="https://developers.google.com/adwords/api/docs/appendix/reports/account-performance-report">ACCOUNT_PERFORMANCE_REPORT</a> in the Google AdWords API.
