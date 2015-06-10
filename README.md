@@ -2,8 +2,6 @@
 
 This repo contains a set up scripts that I use in R with the <a href="https://github.com/jburkhardt/RAdwords">RAdwords</a> package by Johannes Burkhardt.
 
-The purpose of each script is descirbed below
-
 #<a href="https://github.com/chipoglesby/Analyzing-Adwords-in-R/blob/master/account_performance_report.R">Account Performance Report</a>
 The account performance report script loads a list of clients, looping through each account and pulls data from the <a href="https://developers.google.com/adwords/api/docs/appendix/reports/account-performance-report">ACCOUNT_PERFORMANCE_REPORT</a> in the Google AdWords API.
 <p> Use this script to see the overall performance of each account that you manage.
