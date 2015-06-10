@@ -1,7 +1,7 @@
 #Loop through all of these accounts and get the information you need
-
 library(RAdwords)
 
+#Read in a list of clients. This data will need to be exported on the MCC level. 
 clients <- read.csv("clients.csv", header = TRUE, sep = ",")
 
 accounts <- clients$Customer.ID
