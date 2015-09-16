@@ -4,7 +4,7 @@ library(RAdwords)
 #Read in a list of clients. This data will need to be exported on the MCC level. 
 clients <- read.csv("clients.csv", header = TRUE, sep = ",")
 
-accounts <- clients$Customer.ID
+accounts = as.vector(clients$Customer.ID)
 google_auth <- doAuth()
 
 yesterday <- gsub("-","",format(Sys.Date()-1,"%Y-%m-%d"))
