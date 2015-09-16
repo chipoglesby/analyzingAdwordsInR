@@ -6,7 +6,7 @@ library(RAdwords)
 clients <- read.csv("clients.csv", header = TRUE, sep = ",")
 
 #Client ID's to account for looping
-accounts <- clients$Customer.ID
+accounts = as.vector(clients$Customer.ID)
 
 # Authentication, once done you can access all accounts in your MCC
 google_auth <- doAuth()
