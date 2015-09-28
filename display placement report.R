@@ -16,7 +16,7 @@ yesterday <- gsub("-","",format(Sys.Date()-1,"%Y-%m-%d"))
 thirtydays<- gsub("-","",format(Sys.Date()-29,"%Y-%m-%d"))
 
 # Create statement
-body <- statement(select=c("AccountDescriptiveName", "CampaignName", "AdGroupName", "PlacementUrl","Impressions","Clicks","Ctr","AverageCpm","Cost"),
+body <- statement(select=c("AccountDescriptiveName", "CampaignName", "AdGroupName","Criteria","Impressions","Clicks","Ctr","AverageCpm","AverageCpc","Cost", "ConvertedClicks", "ViewThroughConversions", "ConversionValue"),
                   report="PLACEMENT_PERFORMANCE_REPORT",
                   where="AdNetworkType1 = CONTENT",
                   start=thirtydays,
