@@ -1,4 +1,4 @@
-#Loop through all of these accounts and get the information you need
+##Loop through all of these accounts and get the information you need
 
 library(RAdwords)
 library(dplyr)
