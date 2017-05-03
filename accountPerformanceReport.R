@@ -15,8 +15,8 @@ accounts = as.vector(clients$Customer.ID)
 google_auth <- doAuth()
 
 # Specify date range, i.e. last two weeks until yesterday
-yesterday <- gsub("-","",format(Sys.Date()-1,"%Y-%m-%d"))
-thirtydays<- gsub("-","",format(Sys.Date()-29,"%Y-%m-%d"))
+yesterday <- gsub("-", "", format(Sys.Date()-1,"%Y-%m-%d"))
+thirtydays<- gsub("-", "", format(Sys.Date()-29,"%Y-%m-%d"))
 
 # Create statement
 body <- statement(select=c("AccountDescriptiveName",
