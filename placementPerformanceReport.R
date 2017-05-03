@@ -13,15 +13,27 @@ accounts = as.vector(clients$Customer.ID)
 google_auth <- doAuth()
 
 # Specify date range, i.e. last two weeks until yesterday
-yesterday <- gsub("-","",format(Sys.Date()-1,"%Y-%m-%d"))
-thirtydays<- gsub("-","",format(Sys.Date()-29,"%Y-%m-%d"))
+yesterday <- gsub("-", "", format(Sys.Date()-1,"%Y-%m-%d"))
+thirtydays<- gsub("-", "", format(Sys.Date()-29,"%Y-%m-%d"))
 
 # Create statement
-body <- statement(select=c("AccountDescriptiveName", "CampaignName", "AdGroupName", "DisplayName","PlacementUrl","Impressions","Clicks","Ctr","AverageCpm","AverageCpc","Cost", "ConvertedClicks", "ViewThroughConversions"),
-                  report="PLACEMENT_PERFORMANCE_REPORT",
-                  where="AdNetworkType1 = CONTENT",
-                  start=thirtydays,
-                  end=yesterday)
+body <- statement(select = c("AccountDescriptiveName",
+                           "CampaignName", 
+                           "AdGroupName", 
+                           "DisplayName",
+                           "PlacementUrl",
+                           "Impressions",
+                           "Clicks",
+                           "Ctr",
+                           "AverageCpm",
+                           "AverageCpc",
+                           "Cost",
+                           "Conversions",
+                           "ViewThroughConversions"),
+                  report = "PLACEMENT_PERFORMANCE_REPORT",
+                  where = "AdNetworkType1 = CONTENT",
+                  start = thirtydays,
+                  end = yesterday)
 
 #Loop over accounts and rbind data to dataframe
 loopData <- function(){
@@ -38,18 +50,24 @@ loopData <- function(){
 }
 data <- loopData()
 
-placements <- data %>% group_by(CriteriaDisplayName) %>% summarize(
-  AverageCpc=round(sum(Cost) / sum(Clicks),2), 
-  Clicks=sum(Clicks), 
-  Impressions=sum(Impressions), 
-  CTR=round(sum(Clicks) / sum(Impressions),2), 
-  Cost=round(sum(Cost),2), 
-  Conversions=sum(Conversions), 
-  CPA=round(sum(Cost) / sum(Conversions),2))
-placements <- placements[order( -placements$Conversions),]
+placements <- 
+data %>% 
+  group_by(CriteriaDisplayName) %>% 
+  summarize(
+    averageCpc = round(sum(Cost) / sum(Clicks),2), 
+    clicks = sum(Clicks), 
+    impressions = sum(Impressions), 
+    ctr = round(sum(Clicks) / sum(Impressions),2), 
+    cost = round(sum(Cost),2), 
+    conversions = sum(Conversions), 
+    cpa = round(sum(Cost) / sum(Conversions),2)) %>%
+    arrange(desc(conversions))
+
 placements[placements==Inf] <- 0
+
 View(placements)
 #write.csv(placements, "display_placements.csv")
+
 under_performing_placements <- subset(placements, Conversions < 1)
 under_performing_placements <- under_performing_placements[order(-under_performing_placements$Cost),]
 View(under_performing_placements)
