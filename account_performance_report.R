@@ -70,16 +70,21 @@ plot(Clicks ~ Conversions, main="Cost & Conversions")
 abline(lm.out, col="red")
 
 # --- Daily Performance reports ---
-data2 <- data %>% group_by(Day) %>% summarize(CPC=mean(CPC), Impressions=sum(Impressions))
+data2 <- data %>% 
+  group_by(day = Day) %>% 
+  summarize(cpc = mean(CPC),
+            impressions = sum(Impressions))
 
 data1 = data
 data1$Account = NULL
 data1$Impressions = NULL
-data3 <- melt(data1, id="Day")
 
-ggplot(data2, aes(Day, CPC, Impressions)) + 
-  geom_line(aes(fill=data2$CPC), size = .75) + 
-  theme(legend.position="none") 
+data3 <- melt(data1, id="day")
 
-ggplot(data3, aes(x=Day, y=value, color=variable)) + 
+data2 %>%
+ggplot(aes(day, cpc, Impressions)) + 
+  geom_line(aes(fill = cpc , size = .75) + 
+  theme(legend.position = "none") 
+
+ggplot(data3, aes(day, value, variable)) + 
   geom_line()
