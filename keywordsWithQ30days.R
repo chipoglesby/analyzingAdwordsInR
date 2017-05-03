@@ -12,15 +12,25 @@ accounts = as.vector(clients$Customer.ID)
 google_auth <- doAuth()
 
 # Specify date range, i.e. last two weeks until yesterday
-yesterday <- gsub("-","",format(Sys.Date()-1,"%Y-%m-%d"))
-thirtydays<- gsub("-","",format(Sys.Date()-29,"%Y-%m-%d"))
+yesterday <- gsub("-", "", format(Sys.Date()-1,"%Y-%m-%d"))
+thirtydays<- gsub("-", "", format(Sys.Date()-29,"%Y-%m-%d"))
 
 # Create statement
-body <- statement(select=c("AccountDescriptiveName","CampaignName","AdGroupName","KeywordText","KeywordMatchType","QualityScore","Impressions","Clicks","Ctr", "ConvertedClicks","AverageCpc"),
-                  report="KEYWORDS_PERFORMANCE_REPORT",
-                  where="Impressions >1 AND AdNetworkType1 = SEARCH",
-                  start=thirtydays,
-                  end=yesterday)
+body <- statement(select = c("AccountDescriptiveName",
+                             "CampaignName",
+                             "AdGroupName",
+                             "KeywordText",
+                             "KeywordMatchType",
+                             "QualityScore",
+                             "Impressions",
+                             "Clicks",
+                             "Ctr", 
+                             "ConvertedClicks",
+                             "AverageCpc"),
+                  report = "KEYWORDS_PERFORMANCE_REPORT",
+                  where = "Impressions >1 AND AdNetworkType1 = SEARCH",
+                  start = thirtydays,
+                  end = yesterday)
 
 #   data <- getData(clientCustomerId='xxx-xxx-xxxx', google_auth=google_auth ,statement=body)
 
@@ -49,4 +59,7 @@ hist(data$Qualityscore)
 #To remove data:
 #remove(data)
 
-data2.copy <- data %>% group_by(Matchtype) %>% summarize(AverageQS=mean(Qualityscore), Clicks=sum(Clicks))
+data2.copy <- data %>% 
+  group_by(Matchtype) %>% 
+  summarize(averageQS = mean(Qualityscore),
+            clicks=sum(Clicks))
