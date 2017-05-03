@@ -16,11 +16,23 @@ yesterday <- gsub("-","",format(Sys.Date()-1,"%Y-%m-%d"))
 thirtydays<- gsub("-","",format(Sys.Date()-29,"%Y-%m-%d"))
 
 # Create statement
-body <- statement(select=c("AccountDescriptiveName", "CampaignName", "AdGroupName","Criteria","Impressions","Clicks","Ctr","AverageCpm","AverageCpc","Cost", "ConvertedClicks", "ViewThroughConversions", "ConversionValue"),
-                  report="PLACEMENT_PERFORMANCE_REPORT",
-                  where="AdNetworkType1 = CONTENT",
-                  start=thirtydays,
-                  end=yesterday)
+body <- statement(select=  c("AccountDescriptiveName",
+                           "CampaignName",
+                           "AdGroupName",
+                           "Criteria",
+                           "Impressions",
+                           "Clicks",
+                           "Ctr",
+                           "AverageCpm",
+                           "AverageCpc",
+                           "Cost",
+                           "ConvertedClicks",
+                           "ViewThroughConversions",
+                           "ConversionValue"),
+                  report = "PLACEMENT_PERFORMANCE_REPORT",
+                  where = "AdNetworkType1 = CONTENT",
+                  start = thirtydays,
+                  end = yesterday)
 
 #Loop over accounts and rbind data to dataframe
 loopData <- function(){
