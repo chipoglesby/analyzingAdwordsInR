@@ -13,17 +13,24 @@ accounts = as.vector(clients$Customer.ID)
 google_auth <- doAuth()
 
 # Specify date range, i.e. last two weeks until yesterday
-yesterday <- gsub("-","",format(Sys.Date()-1,"%Y-%m-%d"))
-thirtydays <- gsub("-","",format(Sys.Date()-29,"%Y-%m-%d"))
+yesterday <- gsub("-", "", format(Sys.Date()-1,"%Y-%m-%d"))
+thirtydays <- gsub("-", "", format(Sys.Date()-29,"%Y-%m-%d"))
 
 # Create statement
-body <- statement(select=c("ContentImpressionShare", "ContentRankLostImpressionShare", "ContentBudgetLostImpressionShare","Date","AverageCpc", "AverageCpm", "Impressions", "Clicks"),
-                  report="CAMPAIGN_PERFORMANCE_REPORT",
-                  where="AdNetworkType1 = CONTENT",
-                  start=20150101,
-                  end=20150506)
+body <- statement(select = c("ContentImpressionShare",
+                           "ContentRankLostImpressionShare",
+                           "ContentBudgetLostImpressionShare",
+                           "Date",
+                           "AverageCpc",
+                           "AverageCpm", 
+                           "Impressions",
+                           "Clicks"),
+                  report = "CAMPAIGN_PERFORMANCE_REPORT",
+                  where = "AdNetworkType1 = CONTENT",
+                  start = thirtydays,
+                  end = yesterday)
 
-#   data <- getData(clientCustomerId='xxx-xxx-xxxx', google_auth=google_auth ,statement=body)
+# data <- getData(clientCustomerId='xxx-xxx-xxxx', google_auth=google_auth ,statement=body)
 
 #Loop over accounts and rbind data to dataframe
 loopData <- function(){
@@ -47,6 +54,7 @@ names(data)[3] <- "LostISBudget"
 data <- data %>% mutate(ImpressionShare = ifelse(is.na(ImpressionShare),"0",ImpressionShare))
 data <- data %>% mutate(LostISBudget = ifelse(is.na(LostISBudget),"0",LostISBudget))
 data <- data %>% mutate(LostISRank = ifelse(is.na(LostISRank),"0",LostISRank))
+
 data$ImpressionShare <- as.numeric(as.character(data$ImpressionShare))
 data$LostISBudget <- as.numeric(as.character(data$LostISBudget))
 data$LostISRank <- as.numeric(as.character(data$LostISRank))
@@ -59,16 +67,25 @@ data$LostISRank <- as.numeric(as.character(data$LostISRank))
 View(data)
 
 #Lets summarize some data, shall we?
-data2 <- data %>% group_by(Day) %>% summarize(
-    ImpressionShare=mean(ImpressionShare), CPM=mean(Avg.CPM), CPC=mean(CPC))
-data2$ImpressionShare <- format(round(data2$ImpressionShare, 2), nsmall =2)
-data2$CPM <- format(round(data2$CPM, 2), nsmall =2)
-data2$CPC <- format(round(data2$CPC, 2), nsmall =2)
-data2$ImpressionShare <- as.numeric(as.character(data2$ImpressionShare))
-data2$CPM <- as.numeric(as.character(data2$CPM))
-data2$CPC <- as.numeric(as.character(data2$CPC))
+data2 <- 
+  data %>% 
+    group_by(day = Day) %>% 
+    summarize(
+    impressionshare = mean(ImpressionShare), 
+    cpm = mean(Avg.CPM),
+    cpc = mean(CPC))
+
+data2$impressionshare <- format(round(data2$ImpressionShare, 2), nsmall =2)
+data2$cpm <- format(round(data2$CPM, 2), nsmall =2)
+data2$cpm <- format(round(data2$CPC, 2), nsmall =2)
+data2$impressionshare <- as.numeric(as.character(data2$ImpressionShare))
+data2$cpm <- as.numeric(as.character(data2$CPM))
+data2$cpc <- as.numeric(as.character(data2$CPC))
+
 View(data2)
 
 #Plot Impression Share with CPM and CPC
-data3 <- melt(data2, id="Day")
-ggplot(data3, aes(x=Day, y=value, color=variable)) + geom_line()
+data3 <- melt(data2, id="day")
+
+ggplot(data3, aes(day, value, variable)) + 
+  geom_line()

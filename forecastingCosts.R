@@ -10,15 +10,19 @@ loadToken()
 refreshToken()
 
 #Metrics for Account Performance Report
-body <- statement(select=c('Date','Cost'), 
-                  report="ACCOUNT_PERFORMANCE_REPORT",
-                  start="20120101", 
-                  end="20140730")
-data <- getData(clientCustomerId='xxx-xxx-xxxx',statement=body,transformation=TRUE)
+body <- statement(select = c('Date',
+                             'Cost'), 
+                  report = "ACCOUNT_PERFORMANCE_REPORT",
+                  start = thirtydays,
+                  end = yesterday)
+
+data <- getData(clientCustomerId = 'xxx-xxx-xxxx',
+                statement = body,
+                transformation = TRUE)
 
 # Create a time-series object in R with starting year 2012 and frequency 12, for months.
 # You can replace months and year with your own time. 
-myts<- ts(data$Cost, start=c(2012, 1), end=c(2014, 7),)
+myts<- ts(data$Cost, start = c(2012, 1), end = c(2014, 7),)
 
 #OR
 #myts <- msts(data$Cost, seasonal.periods=c(7,365.25))
@@ -31,7 +35,7 @@ HWmodel<- HoltWinters(myts)
 
 # This function predicts the number of expected costs for the next 30 days
 # (n.ahead=12) with 95% of confidence interval.
-future<- predict(HWmodel, n.ahead=30, level=0.95)
+future<- predict(HWmodel, n.ahead = 30, level = 0.95)
 
 # Plot the observed as well as the fitted data on Y-axis with X-axis as time.
 plot(HWmodel, future)
@@ -63,7 +67,7 @@ accuracy(fit)
 #What to do next. Taken from: http://goo.gl/MRp2q3
 
 #Preview what the plot will look like if you want
-HWplot(myts, n.ahead=90, CI=.95, error.ribbon='green',line.size=1)
+HWplot(myts, n.ahead = 90, CI = .95, error.ribbon='green', line.size=1)
 
 #make adjustments to the graph
 graph <- HWplot(myts, n.ahead = 90, error.ribbon = "red")
