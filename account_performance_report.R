@@ -18,10 +18,18 @@ yesterday <- gsub("-","",format(Sys.Date()-1,"%Y-%m-%d"))
 thirtydays<- gsub("-","",format(Sys.Date()-29,"%Y-%m-%d"))
 
 # Create statement
-body <- statement(select=c("AccountDescriptiveName","Impressions","Clicks","Ctr", "ConvertedClicks","AverageCpc", "Cost", "CostPerConvertedClick", "Date"),
+body <- statement(select=c("AccountDescriptiveName",
+                           "Impressions",
+                           "Clicks",
+                           "Ctr", 
+                           "Conversions",
+                           "AverageCpc", 
+                           "Cost", 
+                           "CostPerConvertedClick",
+                           "Date"),
                   report="ACCOUNT_PERFORMANCE_REPORT",
                   where="AdNetworkType1 = SEARCH",
-                  start="20140101",
+                  start=thirtydays,
                   end=yesterday)
 
 #Test if needed
@@ -69,6 +77,9 @@ data1$Account = NULL
 data1$Impressions = NULL
 data3 <- melt(data1, id="Day")
 
-ggplot(data2, aes(Day, CPC, Impressions)) + geom_line(aes(fill=data2$CPC), size = .75) + theme(legend.position="none") 
+ggplot(data2, aes(Day, CPC, Impressions)) + 
+  geom_line(aes(fill=data2$CPC), size = .75) + 
+  theme(legend.position="none") 
 
-ggplot(data3, aes(x=Day, y=value, color=variable)) + geom_line()
+ggplot(data3, aes(x=Day, y=value, color=variable)) + 
+  geom_line()
