@@ -10,18 +10,27 @@ clients <- read.csv("clients.csv", header = TRUE, sep = ",")
 
 #Client ID's to account for looping
 accounts = as.vector(clients$Customer.ID)
+
 # Authentication, once done you can access all accounts in your MCC
 google_auth <- doAuth()
 
 # Specify date range, i.e. last two weeks until yesterday
-yesterday <- gsub("-","",format(Sys.Date()-1,"%Y-%m-%d"))
-thirtydays<- gsub("-","",format(Sys.Date()-29,"%Y-%m-%d"))
+yesterday <- gsub("-", "", format(Sys.Date()-1,"%Y-%m-%d"))
+thirtydays<- gsub("-", "", format(Sys.Date()-29,"%Y-%m-%d"))
 
 # Create statement
-body <- statement(select=c("AccountDescriptiveName","Impressions","Clicks","Ctr", "ConvertedClicks","AverageCpc", "Cost", "CostPerConvertedClick", "Date"),
+body <- statement(select=c("AccountDescriptiveName",
+                           "Impressions",
+                           "Clicks",
+                           "Ctr", 
+                           "Conversions",
+                           "AverageCpc", 
+                           "Cost", 
+                           "CostPerConvertedClick",
+                           "Date"),
                   report="ACCOUNT_PERFORMANCE_REPORT",
                   where="AdNetworkType1 = SEARCH",
-                  start="20140101",
+                  start=thirtydays,
                   end=yesterday)
 
 #Test if needed
@@ -62,13 +71,21 @@ plot(Clicks ~ Conversions, main="Cost & Conversions")
 abline(lm.out, col="red")
 
 # --- Daily Performance reports ---
-data2 <- data %>% group_by(Day) %>% summarize(CPC=mean(CPC), Impressions=sum(Impressions))
+data2 <- data %>% 
+  group_by(day = Day) %>% 
+  summarize(cpc = mean(CPC),
+            impressions = sum(Impressions))
 
 data1 = data
 data1$Account = NULL
 data1$Impressions = NULL
-data3 <- melt(data1, id="Day")
 
-ggplot(data2, aes(Day, CPC, Impressions)) + geom_line(aes(fill=data2$CPC), size = .75) + theme(legend.position="none") 
+data3 <- melt(data1, id="day")
 
-ggplot(data3, aes(x=Day, y=value, color=variable)) + geom_line()
+data2 %>%
+ggplot(aes(day, cpc, Impressions)) + 
+  geom_line(aes(fill = cpc , size = .75) + 
+  theme(legend.position = "none") 
+
+ggplot(data3, aes(day, value, variable)) + 
+  geom_line()
