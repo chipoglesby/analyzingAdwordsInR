@@ -37,8 +37,8 @@ body <- statement(select = c("AccountDescriptiveName",
 
 #Loop over accounts and rbind data to dataframe
 data = data.frame()
-for(i in seq_along(accounts)){
-  tmp = getData(clientCustomerId=accounts[i],statement=body,google_auth = google_auth,transformation=TRUE,changeNames=TRUE)
+for(account in seq_along(accounts)){
+  tmp = getData(clientCustomerId=account,statement=body,google_auth = google_auth,transformation=TRUE,changeNames=TRUE)
   data = rbind(tmp)
 }
 
