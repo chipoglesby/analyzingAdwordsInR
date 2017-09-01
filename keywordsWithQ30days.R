@@ -39,7 +39,7 @@ body <- statement(select = c("AccountDescriptiveName",
 data = data.frame()
 for(account in seq_along(accounts)){
   tmp = getData(clientCustomerId=account,statement=body,google_auth = google_auth,transformation=TRUE,changeNames=TRUE)
-  data = rbind(tmp)
+  data = rbind(data,tmp)
 }
 
 
