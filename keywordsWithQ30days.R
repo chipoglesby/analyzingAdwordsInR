@@ -36,19 +36,12 @@ body <- statement(select = c("AccountDescriptiveName",
 
 
 #Loop over accounts and rbind data to dataframe
-loopData <- function(){
-  for(i in 1:length(accounts)){
-    if (i == 1){
-      xy <- getData(clientCustomerId=accounts[i],statement=body,google_auth = google_auth,transformation=TRUE,changeNames=TRUE)
-    }
-    else {
-      xz <- getData(clientCustomerId=accounts[i],statement=body,google_auth = google_auth,transformation=TRUE,changeNames=TRUE)
-      xy <- rbind(xy,xz)
-    }
-  }
-  return(xy)
+data = data.frame()
+for(i in seq_along(accounts)){
+  tmp = getData(clientCustomerId=accounts[i],statement=body,google_auth = google_auth,transformation=TRUE,changeNames=TRUE)
+  data = rbind(tmp)
 }
-data <- loopData()
+
 
 #Change Quality Score to numeric
 data$Qualityscore = as.numeric(as.character(data$Qualityscore))
